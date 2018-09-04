@@ -1,27 +1,23 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<form id="search-field" action="/search" method="POST">
-  Name: <input type="text" name="firstname">
-  <input type="submit" value="Submit">
-</form>
+Search for a name: <input type="text" name="firstname">
 
-<p id="demo"></p>
+<div id="results"></div>
 
 <script>
 $(document).ready(function(){
     $("input").keyup(function(event){
 
+      //Store the value of what's currently been typed in the input field
       let text_input = $(this).val();
 
-      // var str = "Hello world, welcome to the universe.";
-      // var n = str.indexOf(text_input);
-      // document.getElementById("demo").innerHTML = n;
+      //Store the current date and time in a variable
+      let start = Date.now();
 
+      //Create a setTimeout function, to limit the AJAX requests to 300 milliseconds
+      setTimeout(function() {
 
-
-
-      //https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_indexof
-
+      //The AJAX function
       $.ajax({
 
           url: "https://raw.githubusercontent.com/sucrebucre/user-information-app/ajax-implementation/users.json",
@@ -29,21 +25,51 @@ $(document).ready(function(){
           cache: false,
           success: function (result) {
 
+          //JSON parse the result, that we got from the "url"/"success" property
           let obj = JSON.parse(result);
 
+          //Create an empty array, in which we can store the names that meet the criteria of what has been typed by the user in the input field
+          let array = [];
+
+          //Loop over the object we just parsed ("users.json")
           for (i=0; i<obj.length; i++) {
 
-            var string = obj[i].firstname;
-            var present_in_string = string.includes(text_input);
-            //document.getElementById("demo").innerHTML = present_in_string;
+            //At every iteration, create a string that contains the first name and the last name
+            var string = obj[i].firstname + " " + obj[i].lastname;
 
+            //Check if this string matches with what has been typed by the end user
+            var present_in_string = string.includes(text_input);
+
+            //If there is a match, add the full name to the array
             if (present_in_string == true) {
-              document.getElementById("demo").innerHTML = obj[i].firstname;
+              array.push(obj[i].firstname + " " + obj[i].lastname);
             }
 
-            // if (obj[i].firstname == text_input ) {
-            //   console.log(obj[i].firstname + " exists in the database!");
-            // }
+          }
+
+          console.log(array);
+
+          //Prepare formatting of an unordered list
+          var str = '<ul>'
+
+          //For every element in the array, add a list item
+          array.forEach(function(item) {
+            str += '<li>'+ item + '</li>';
+          });
+
+          str += '</ul>';
+
+          //Show the content on the front-end
+          document.getElementById("results").innerHTML = str;
+
+          //If there is no input in the input field, show the following
+          if (text_input == ""){
+            document.getElementById("results").innerHTML = "<p>Type a name in order to search!</p>";
+          }
+
+          //If there is no match with user input, show the following
+          if(1 > array.length) {
+            document.getElementById("results").innerHTML = "<p>Nothing found, please try another name!</p>";
           }
 
           },
@@ -52,12 +78,9 @@ $(document).ready(function(){
           }
       });
 
+    //Limit the AJAX function only to run every 300 milliseconds
+    }, 300);
+
     });
 });
-</script>
-
-<script>
-
-
-
 </script>
