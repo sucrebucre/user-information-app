@@ -20,29 +20,29 @@ $(document).ready(function(){
       //The AJAX function
       $.ajax({
 
-          url: "https://raw.githubusercontent.com/sucrebucre/user-information-app/ajax-implementation/users.json",
+          url: "/users-ajax",
           type: 'GET',
           cache: false,
           success: function (result) {
 
           //JSON parse the result, that we got from the "url"/"success" property
-          let obj = JSON.parse(result);
+          let obj = result;
 
           //Create an empty array, in which we can store the names that meet the criteria of what has been typed by the user in the input field
           let array = [];
 
           //Loop over the object we just parsed ("users.json")
-          for (i=0; i<obj.length; i++) {
+          for (i=0; i<obj.users.length; i++) {
 
             //At every iteration, create a string that contains the first name and the last name
-            var string = obj[i].firstname + " " + obj[i].lastname;
+            var string = obj.users[i].firstname + " " + obj.users[i].lastname;
 
             //Check if this string matches with what has been typed by the end user
             var present_in_string = string.includes(text_input);
 
             //If there is a match, add the full name to the array
             if (present_in_string == true) {
-              array.push(obj[i].firstname + " " + obj[i].lastname);
+              array.push(obj.users[i].firstname + " " + obj.users[i].lastname);
             }
 
           }

@@ -29,6 +29,10 @@ fs.readFile('users.json', 'utf8', function (err, data) {
 
 });
 
+app.get('/users-ajax', (request,response) => {
+  response.send({users})
+})
+
 app.get('/users', function (request, response) {
   response.render('users', { users : users} );
 });
