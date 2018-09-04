@@ -1,8 +1,3 @@
 We are on the Ajax implementation branch
 
-Techniques used:
-- ejs
-- jQuery
-- Ajax
-- NodeJS
-- Express
+Check the code on http://localhost:3000/search/
