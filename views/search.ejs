@@ -1,5 +1,63 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <form id="search-field" action="/search" method="POST">
-  First name: <input type="text" name="firstname">
-  Last name: <input type="text" name="lastname">
+  Name: <input type="text" name="firstname">
   <input type="submit" value="Submit">
 </form>
+
+<p id="demo"></p>
+
+<script>
+$(document).ready(function(){
+    $("input").keyup(function(event){
+
+      let text_input = $(this).val();
+
+      // var str = "Hello world, welcome to the universe.";
+      // var n = str.indexOf(text_input);
+      // document.getElementById("demo").innerHTML = n;
+
+
+
+
+      //https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_indexof
+
+      $.ajax({
+
+          url: "https://raw.githubusercontent.com/sucrebucre/user-information-app/ajax-implementation/users.json",
+          type: 'GET',
+          cache: false,
+          success: function (result) {
+
+          let obj = JSON.parse(result);
+
+          for (i=0; i<obj.length; i++) {
+
+            var string = obj[i].firstname;
+            var present_in_string = string.includes(text_input);
+            //document.getElementById("demo").innerHTML = present_in_string;
+
+            if (present_in_string == true) {
+              document.getElementById("demo").innerHTML = obj[i].firstname;
+            }
+
+            // if (obj[i].firstname == text_input ) {
+            //   console.log(obj[i].firstname + " exists in the database!");
+            // }
+          }
+
+          },
+          error: function () {
+              console.log("Not working");
+          }
+      });
+
+    });
+});
+</script>
+
+<script>
+
+
+
+</script>
