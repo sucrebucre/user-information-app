@@ -70,3 +70,9 @@ app.listen(3000, function(){
 });
 
 // options --> set/get/use/listen
+
+//set ->
+//get ->
+//post ->
+//use ->
+//listen ->
