@@ -1,5 +1,6 @@
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const read_json = require('./json-file-reader');
 const app = express();
 
 // Body-parser (for POST requests)
@@ -13,21 +14,12 @@ let fs = require('fs');
 let users;
 let added_users;
 
-fs.readFile('users.json', 'utf8', function (err, data) {
-  if (err) throw err;
+read_json("users.json", callback);
 
-  //Parsing to READ data
-  users = JSON.parse(data);
-
-  // Returns the format
-
-  // {
-  //   firstname: 'Kamalani',
-  //   lastname: 'Georgy',
-  //   email: 'georgy.porgy@gmail.com'
-  // }, ...
-
-});
+function callback(obj) {
+  console.log(obj);
+  users = obj;
+}
 
 app.get('/users-ajax', (request,response) => {
   response.send({users})
@@ -72,11 +64,3 @@ app.post('/users', urlencodedParser, function (request, response) {
 app.listen(3000, function(){
   console.log('Server is running on port 3000');
 });
-
-// options --> set/get/use/listen
-
-//set ->
-//get ->
-//post ->
-//use ->
-//listen ->
